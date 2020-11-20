@@ -26,17 +26,18 @@ scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/aut
 creds = ServiceAccountCredentials.from_json_keyfile_name(os.path.join(project_root, 'google_api_key.json'), scope)
 client = gspread.authorize(creds)
 
-db_name = 'Empathy Interviews Combined Data'
+db_name = 'College_and_Career_Staff_Survey_November_2_2020'
 data = client.open(db_name)
 data.worksheets()
-data_sheet = 'formatted'
+data_sheet = 'Responses'
 
 updated_data = data.worksheet(data_sheet)
+
 list_of_hashes = updated_data.get_all_records()
 headers = list_of_hashes.pop(0)
-df = pd.DataFrame(list_of_hashes, columns=headers)
+df = pd.DataFrame(list_of_hashes)
 print(df.tail())
-
-filename = "%s_%s.%s" % ("empathy_data_updated", _getToday() ,"csv")
+df.columns
+filename = "%s_%s.%s" % ("staff_survey_data_updated", _getToday() ,"csv")
 
 df.to_csv(os.path.join(path_data, filename), encoding='utf-8', index=False)
